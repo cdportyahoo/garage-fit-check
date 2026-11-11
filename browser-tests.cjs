@@ -27,7 +27,10 @@ const path = require('node:path');
   const oldWidth=Number(await page.locator('#sw').inputValue());box=await page.locator('.handle').boundingBox();await page.mouse.move(box.x+9,box.y+9);await page.mouse.down();await page.mouse.move(box.x+19,box.y+19,{steps:5});await page.mouse.up();assert.ok(Number(await page.locator('#sw').inputValue())>oldWidth);checks++;
   // Real touch events through Chromium's input pipeline.
   await page.locator('#reset').click();await page.locator('#drawing').scrollIntoViewIfNeeded();box=await cabinet.boundingBox();const client=await page.context().newCDPSession(page);const touch=async(type,x,y)=>client.send('Input.dispatchTouchEvent',{type,touchPoints:type==='touchEnd'?[]:[{x,y}]});
-  await touch('touchStart',box.x+box.width/2,box.y+15);await touch('touchMove',box.x+box.width/2-20,box.y+35);await touch('touchEnd');assert.ok(Number(await page.locator('#sx').inputValue())<218);checks++;
+  const viewportBefore=await page.evaluate(()=>({scrollY,top:document.getElementById('drawing').getBoundingClientRect().top}));
+  await touch('touchStart',box.x+box.width/2,box.y+15);assert.equal(await page.evaluate(()=>document.body.style.position),'fixed');checks++;
+  await touch('touchMove',box.x+box.width/2-20,box.y+35);assert.ok(Math.abs(await page.evaluate(()=>document.getElementById('drawing').getBoundingClientRect().top)-viewportBefore.top)<1);checks++;
+  await touch('touchEnd');assert.notEqual(await page.evaluate(()=>document.body.style.position),'fixed');assert.equal(await page.evaluate(()=>scrollY),viewportBefore.scrollY);checks++;assert.ok(Number(await page.locator('#sx').inputValue())<218);checks++;
   await page.evaluate(()=>{window.print=()=>{window.printCalled=true}});await page.locator('#print').click();assert.equal(await page.evaluate(()=>window.printCalled),true);checks++;
   await page.emulateMedia({media:'print'});assert.equal(await page.locator('.controls').isVisible(),false);await page.pdf({path:path.join(__dirname,`print-${width}.pdf`),format:'A4'});checks++;
   assert.deepEqual(errors,[]);checks++;await page.close();
