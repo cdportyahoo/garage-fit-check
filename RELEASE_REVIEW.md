@@ -22,6 +22,10 @@ Status: release candidate on Version-10-development; not published. main/Version
 
 69 logic checks pass with `node logic-tests.cjs`, including complete report rows, decimals, add/remove, save/load and invalid-data suppression. Minimal DOM harness; not rendering verification. Local Chromium execution remains blocked by host socket permissions. Existing browser tests remain a separate unexecuted suite.
 
+## Final user acceptance — 2026-11-11
+
+The user reported "Everything worked good" after the 10.9 Safari/PDF review request, which asked for a third cabinet and a PDF with a readable drawing and all cabinet rows. Treat this as user-reported acceptance, not an independent rendering inspection.
+
 ## Remaining before release
 
-Open 10.9 directly in Safari, save a PDF containing at least three cabinets and confirm all rows are readable, the diagram is visible, and no text is clipped across pages. Recheck a quick drag to guard against accidental regression. Do not publish until the revised PDF is reviewed. Physical printing remains untested.
+Review and explicitly authorize deployment of 10.9. main/Version 9 remains unchanged until that decision. Physical printing and desktop browser rendering remain untested. Browser-local saved layouts from the preview do not automatically transfer to a different published origin.
