@@ -23,7 +23,7 @@ storageBlocked=true;nodes.save.onclick();equal(nodes.saveMessage.textContent.inc
 storageBlocked=false;
 nodes.reset.onclick();equal(nodes.vx.value,'80.5');equal(nodes.vy.value,'34.5');
 input('gw',300);nodes.centerCar.onclick();equal(nodes.vx.value,'110.5');
-const drawing=nodes.drawing;drawing.setPointerCapture=()=>{};drawing.getScreenCTM=()=>({inverse(){return {}}});drawing.createSVGPoint=()=>({x:0,y:0,matrixTransform(){return {x:this.x,y:this.y}}});
+const drawing=nodes.drawing;drawing.setPointerCapture=()=>{};nodes.interaction.setPointerCapture=()=>{};drawing.getScreenCTM=()=>({inverse(){return {}}});drawing.createSVGPoint=()=>({x:0,y:0,matrixTransform(){return {x:this.x,y:this.y}}});
 const fire=(kind,x,y,id=7)=>drawing.listeners[kind]({clientX:x,clientY:y,pointerId:id,target:{closest(selector){return selector==='.vehicle'?{}:null}},preventDefault(){}});
 fire('pointerdown',200,200);fire('pointermove',170,220,8);equal(nodes.vx.value,'110.5');
 fire('pointermove',170,220);equal(Number(nodes.vx.value)<110.5,true);equal(Number(nodes.vy.value)>34.5,true);
@@ -31,13 +31,7 @@ fire('pointermove',-10000,-10000);equal(nodes.vx.value,'0');equal(nodes.vy.value
 fire('pointermove',10000,10000);equal(nodes.vx.value,'221');equal(nodes.vy.value,'69');
 fire('pointerup',10000,10000);fire('pointermove',100,100);equal(nodes.vx.value,'221');
 nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.vx.value,'221');equal(nodes.vy.value,'69');
-nodes.reset.onclick();let prevented=0;const target=node();target.closest=selector=>selector.includes('vehicle')?{}:null;target.removeEventListener=(k,f)=>{if(target.listeners[k]===f)delete target.listeners[k]};
-const touch=(x,y,id=42)=>({changedTouches:[{identifier:id,clientX:x,clientY:y}],target,cancelable:true,preventDefault(){prevented++}});
-drawing.listeners.pointerdown({pointerType:'touch'});
-drawing.listeners.touchstart(touch(200,200));equal(prevented,1);
-// Native move continues on original target after render replaces SVG content.
-target.listeners.touchmove(touch(200,240));equal(Number(nodes.vy.value)>34.5,true);equal(prevented,2);
-target.listeners.touchmove(touch(200,10000));equal(nodes.vy.value,'69');
-target.listeners.touchend(touch(200,10000));equal(target.listeners.touchmove,undefined);equal(target.listeners.touchcancel,undefined);
-drawing.listeners.touchstart(touch(200,200));target.listeners.touchmove(touch(200,-10000));equal(nodes.vy.value,'0');target.listeners.touchcancel(touch(200,-10000));equal(target.listeners.touchmove,undefined);
-console.log(`${checks} logic checks passed. Safari touch scrolling still requires device verification.`);
+nodes.reset.onclick();const interaction=nodes.interaction;
+// The gesture target stays outside the redrawn scene throughout every move.
+fire('pointerdown',200,200);fire('pointermove',200,10000);equal(nodes.vy.value,'69');equal(nodes.interaction,interaction);fire('pointerup',200,10000);
+console.log(`${checks} logic checks passed. Stable touch target requires Safari verification.`);
