@@ -9,3 +9,8 @@ Address the user's report that cabinet 1 feels stuck to the wall and selection b
 - Retain 10.14.1 native touch prevention without page positioning or scrollTo calls. Artwork and saved-layout schema unchanged.
 
 146 logic checks pass, including direct selection, touch outside a narrow footprint, moving from the former resize corner without changing size, explicit resize and mode cleanup, plus prior native drag and saved-layout checks. Device Safari verification remains required. Browser suite updated for explicit Resize mode; not run locally.
+
+
+## User acceptance — 2026-11-11
+
+After testing 10.15, Chris reported: "Everything seems to be working just fine in both modes, Safari and browser." Record this as user-reported Safari and in-app browser acceptance of the current controls. Keep this interaction logic as the working baseline. It does not establish automated device coverage or every possible layout.
