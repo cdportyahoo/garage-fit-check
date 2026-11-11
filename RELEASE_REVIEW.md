@@ -1,6 +1,6 @@
 # Garage Fit Check 10.9 release review
 
-Status: release candidate on Version-10-development; not published. main/Version 9 unchanged.
+Status: user authorized publishing 10.9 on 2026-11-11. Prepared for merge and GitHub Pages deployment.
 
 ## Accepted on user's iPhone in Safari (10.8.3)
 
@@ -26,6 +26,6 @@ Status: release candidate on Version-10-development; not published. main/Version
 
 The user reported "Everything worked good" after the 10.9 Safari/PDF review request, which asked for a third cabinet and a PDF with a readable drawing and all cabinet rows. Treat this as user-reported acceptance, not an independent rendering inspection.
 
-## Remaining before release
+## Deployment authorization
 
-Review and explicitly authorize deployment of 10.9. main/Version 9 remains unchanged until that decision. Physical printing and desktop browser rendering remain untested. Browser-local saved layouts from the preview do not automatically transfer to a different published origin.
+The user explicitly authorized publishing 10.9 and clarified that preserving Version 9 was an assistant-introduced precaution, not their requirement. Physical printing and desktop browser rendering remain untested. Browser-local saved layouts from the preview do not automatically transfer to a different published origin.
