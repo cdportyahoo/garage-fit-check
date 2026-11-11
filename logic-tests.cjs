@@ -31,4 +31,8 @@ fire('pointermove',-10000,-10000);equal(nodes.vx.value,'0');equal(nodes.vy.value
 fire('pointermove',10000,10000);equal(nodes.vx.value,'221');equal(nodes.vy.value,'69');
 fire('pointerup',10000,10000);fire('pointermove',100,100);equal(nodes.vx.value,'221');
 nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.vx.value,'221');equal(nodes.vy.value,'69');
+let prevented=0;const target=node();target.closest=()=>({});target.removeEventListener=(k,f)=>{if(target.listeners[k]===f)delete target.listeners[k]};
+drawing.listeners.touchstart({target,cancelable:true,preventDefault(){prevented++}});equal(prevented,1);
+target.listeners.touchmove({cancelable:true,preventDefault(){prevented++}});equal(prevented,2);
+target.listeners.touchend();equal(target.listeners.touchmove,undefined);equal(target.listeners.touchcancel,undefined);
 console.log(`${checks} logic checks passed. Browser/touch/print rendering require separate browser tests.`);
