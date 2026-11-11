@@ -1,9 +1,9 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync(__dirname+'/index.html','utf8');
-const nodes={};let active=null,printed=false;let saved=null,storageBlocked=false;const localStorage={setItem(k,v){if(storageBlocked)throw Error('blocked');saved=v},getItem(){if(storageBlocked)throw Error('blocked');return saved}};
+const testBody={style:{position:'relative',top:'',left:'',width:'',overflow:'',touchAction:'',overscrollBehavior:''}},testRoot={style:{overflow:'visible',overscrollBehavior:'auto',scrollBehavior:''}},testEvents={};let restoredScroll=null;const testWindow={scrollX:0,scrollY:560,scrollTo(x,y){restoredScroll=[x,y]},addEventListener(k,f){testEvents[k]=f},print(){printed=true}};const nodes={};let active=null,printed=false;let saved=null,storageBlocked=false;const localStorage={setItem(k,v){if(storageBlocked)throw Error('blocked');saved=v},getItem(){if(storageBlocked)throw Error('blocked');return saved}};
 function node(){let value='';return {get value(){return value},set value(v){value=String(v)},textContent:'',disabled:false,style:{},children:[],listeners:{},setAttribute(k,v){this[k]=v},appendChild(x){this.children.push(x)},replaceChildren(){this.children=[]},addEventListener(k,f){this.listeners[k]=f}}}
 for(const match of html.matchAll(/<([a-z]+)[^>]*\bid="([^"]+)"[^>]*>/g)){nodes[match[2]]=node();nodes[match[2]].value=match[0].match(/value="([^"]*)"/)?.[1]||''}
-vm.runInNewContext(html.match(/<script>([\s\S]*?)<\/script>/)[1],{localStorage,document:{getElementById:id=>nodes[id],createElementNS:()=>node(),get activeElement(){return active}},window:{print(){printed=true}},alert(){}});
+vm.runInNewContext(html.match(/<script>([\s\S]*?)<\/script>/)[1],{localStorage,document:{body:testBody,documentElement:testRoot,addEventListener(k,f){testEvents[k]=f},getElementById:id=>nodes[id],createElementNS:()=>node(),get activeElement(){return active}},window:testWindow,alert(){}});
 let checks=0;const equal=(a,b)=>{assert.equal(a,b);checks++};const input=(id,value)=>{active=nodes[id];nodes[id].value=String(value);nodes[id].listeners.input();active=null};const status=()=>nodes.status.textContent;
 equal(status(),'REVISE');equal(nodes.message.textContent.includes('13 in at cabinet #2'),true);
 for(const id of ['gw','gd','vw','vl','gap','sx','sy','sw','sh']){nodes.reset.onclick();input(id,'');equal(status(),'ENTER DATA');equal(nodes.print.disabled,true)}
@@ -52,4 +52,15 @@ nodes.dimensions.onclick();equal(findAll(nodes.scene,n=>n.class==='dimension-lay
 const legacy=JSON.parse(saved);delete legacy.vehicleType;delete legacy.showDimensions;saved=JSON.stringify(legacy);nodes.load.onclick();equal(nodes.dimensions['aria-pressed'],'true');equal(nodes.vw.value,'83.5');
 const bad=JSON.parse(saved);bad.vehicleType='constructor';saved=JSON.stringify(bad);nodes.load.onclick();equal(nodes.saveMessage.textContent.includes('kept'),true);
 nodes.reset.onclick();equal(nodes['preset-suv']['aria-pressed'],'true');equal(nodes.vw.value,'79');equal(nodes.vy.value,'34.5');
-console.log(`${checks} logic checks passed, including presets, vehicle appearance, dimensions and legacy saved layouts. Device rendering still needs browser review.`);
+nodes.reset.onclick();
+const touchEvent=(type,x,y,id=91)=>({type,changedTouches:[{identifier:id,clientX:x,clientY:y}],cancelable:true,preventDefault(){this.prevented=true}});
+const surface=nodes.interaction;surface.setPointerCapture=id=>assert.ok(id>=0);
+drawing.listeners.pointerdown({pointerType:'touch'});equal(testBody.style.position,'relative');
+const ts=touchEvent('touchstart',200,200);surface.listeners.touchstart(ts);equal(ts.prevented,true);equal(testBody.style.position,'fixed');equal(testBody.style.top,'-560px');equal(testRoot.style.overflow,'hidden');
+const tm=touchEvent('touchmove',200,10000);surface.listeners.touchmove(tm);equal(nodes.vy.value,'69');equal(tm.prevented,true);equal(testBody.style.position,'fixed');
+surface.listeners.touchend(touchEvent('touchend',200,10000,99));equal(testBody.style.position,'fixed');
+surface.listeners.touchend(touchEvent('touchend',200,10000));equal(testBody.style.position,'relative');equal(testRoot.style.overflow,'visible');equal(restoredScroll.join(','),'0,560');
+surface.listeners.touchstart(touchEvent('touchstart',200,200));surface.listeners.touchcancel({type:'touchcancel',changedTouches:[],cancelable:true,preventDefault(){}});equal(testBody.style.position,'relative');
+nodes.reset.onclick();surface.listeners.touchstart(touchEvent('touchstart',364,233));surface.listeners.touchmove(touchEvent('touchmove',350,219));equal(Number(nodes.sw.value)<18,true);equal(Number(nodes.sh.value)<96,true);testEvents.blur();equal(testBody.style.position,'relative');
+nodes.reset.onclick();surface.listeners.touchstart(touchEvent('touchstart',200,200));nodes.reset.onclick();equal(testBody.style.position,'relative');equal(nodes.vy.value,'34.5');
+console.log(`${checks} logic checks passed, including native touch, scroll-lock restoration, resize/cancel/blur, presets and saved layouts. Safari device testing remains required.`);
