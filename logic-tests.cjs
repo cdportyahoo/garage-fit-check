@@ -5,7 +5,7 @@ function node(){let value='';return {get value(){return value},set value(v){valu
 for(const match of html.matchAll(/<([a-z]+)[^>]*\bid="([^"]+)"[^>]*>/g)){nodes[match[2]]=node();nodes[match[2]].value=match[0].match(/value="([^"]*)"/)?.[1]||''}
 vm.runInNewContext(html.match(/<script>([\s\S]*?)<\/script>/)[1],{localStorage,document:{getElementById:id=>nodes[id],createElementNS:()=>node(),get activeElement(){return active}},window:{print(){printed=true}},alert(){}});
 let checks=0;const equal=(a,b)=>{assert.equal(a,b);checks++};const input=(id,value)=>{active=nodes[id];nodes[id].value=String(value);nodes[id].listeners.input();active=null};const status=()=>nodes.status.textContent;
-equal(status(),'REVISE');equal(nodes.message.textContent.includes('17 in at cabinet #2'),true);
+equal(status(),'REVISE');equal(nodes.message.textContent.includes('13 in at cabinet #2'),true);
 for(const id of ['gw','gd','vw','vl','gap','sx','sy','sw','sh']){nodes.reset.onclick();input(id,'');equal(status(),'ENTER DATA');equal(nodes.print.disabled,true)}
 for(const id of ['sx','sy','sw','sh']){nodes.reset.onclick();input(id,-1);equal(status(),'ENTER DATA')}
 nodes.reset.onclick();input('gap',0);equal(status(),'FIT');input('sx',75);input('sy',22);equal(status(),'STOP');
@@ -20,4 +20,15 @@ input('sw','');equal(nodes.save.disabled,true);nodes.reset.onclick();
 saved='broken';nodes.load.onclick();equal(nodes.gw.value,'240');equal(nodes.saveMessage.textContent.includes('kept'),true);
 saved=JSON.stringify({version:1,measurements:{},units:[]});nodes.load.onclick();equal(nodes.gw.value,'240');
 storageBlocked=true;nodes.save.onclick();equal(nodes.saveMessage.textContent.includes('could not save'),true);nodes.load.onclick();equal(nodes.gw.value,'240');
+storageBlocked=false;
+nodes.reset.onclick();equal(nodes.vx.value,'80.5');equal(nodes.vy.value,'34.5');
+input('gw',300);nodes.centerCar.onclick();equal(nodes.vx.value,'110.5');
+const drawing=nodes.drawing;drawing.setPointerCapture=()=>{};drawing.getScreenCTM=()=>({inverse(){return {}}});drawing.createSVGPoint=()=>({x:0,y:0,matrixTransform(){return {x:this.x,y:this.y}}});
+const fire=(kind,x,y,id=7)=>drawing.listeners[kind]({clientX:x,clientY:y,pointerId:id,target:{closest(selector){return selector==='.vehicle'?{}:null}},preventDefault(){}});
+fire('pointerdown',200,200);fire('pointermove',170,220,8);equal(nodes.vx.value,'110.5');
+fire('pointermove',170,220);equal(Number(nodes.vx.value)<110.5,true);equal(Number(nodes.vy.value)>34.5,true);
+fire('pointermove',-10000,-10000);equal(nodes.vx.value,'0');equal(nodes.vy.value,'0');
+fire('pointermove',10000,10000);equal(nodes.vx.value,'221');equal(nodes.vy.value,'69');
+fire('pointerup',10000,10000);fire('pointermove',100,100);equal(nodes.vx.value,'221');
+nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.vx.value,'221');equal(nodes.vy.value,'69');
 console.log(`${checks} logic checks passed. Browser/touch/print rendering require separate browser tests.`);
