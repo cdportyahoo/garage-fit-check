@@ -34,4 +34,10 @@ nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.vx.v
 nodes.reset.onclick();const interaction=nodes.interaction;
 // The gesture target stays outside the redrawn scene throughout every move.
 fire('pointerdown',200,200);fire('pointermove',200,10000);equal(nodes.vy.value,'69');equal(nodes.interaction,interaction);fire('pointerup',200,10000);
-console.log(`${checks} logic checks passed. Stable touch target requires Safari verification.`);
+nodes.reset.onclick();equal(nodes.reportRows.children.length,3);
+equal(nodes.reportRows.children[0].children.map(c=>c.textContent).join('|'),'Car|80.5|34.5|79|195');
+equal(nodes.reportRows.children[2].children.map(c=>c.textContent).join('|'),'Cabinet #2|8|232|60|18');
+nodes.add.onclick();equal(nodes.reportRows.children.length,4);input('sw',53.5);equal(nodes.reportRows.children[3].children[3].textContent,'53.5');
+nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.reportRows.children.length,4);equal(nodes.reportRows.children[3].children[3].textContent,'53.5');
+nodes.remove.onclick();equal(nodes.reportRows.children.length,3);input('gd','');equal(nodes.reportRows.children.length,0);equal(nodes.print.disabled,true);
+console.log(`${checks} logic checks passed, including all-object print-summary values. PDF appearance requires Safari preview.`);
