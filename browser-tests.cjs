@@ -17,7 +17,7 @@ const path = require('node:path');
   await fill('sw',18);await fill('sx',-1);assert.equal(await status(),'ENTER DATA');checks++;
   await page.locator('#reset').click();await fill('gap',0);assert.equal(await status(),'FIT');checks++;
   await fill('sx',75);await fill('sy',22);assert.equal(await status(),'STOP');
-  assert.equal(await page.locator('.vehicle [data-vehicle-type] > path').first().getAttribute('fill'),'#ce506b');checks++;
+  assert.equal(await page.locator('.vehicle-footprint').getAttribute('stroke'),'#b32245');checks++;
   await page.locator('#reset').click();await fill('vx',230);assert.equal(await status(),'STOP');checks++;
   await page.locator('#reset').click();await fill('gw','');assert.equal(await status(),'ENTER DATA');checks++;
   await page.locator('#reset').click();await page.locator('#add').click();assert.equal(await page.locator('#selectedName').textContent(),'#3');await page.locator('#remove').click();assert.equal(await page.locator('#scene .unit').count(),2);checks++;
