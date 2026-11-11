@@ -40,4 +40,16 @@ equal(nodes.reportRows.children[2].children.map(c=>c.textContent).join('|'),'Cab
 nodes.add.onclick();equal(nodes.reportRows.children.length,4);input('sw',53.5);equal(nodes.reportRows.children[3].children[3].textContent,'53.5');
 nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.reportRows.children.length,4);equal(nodes.reportRows.children[3].children[3].textContent,'53.5');
 nodes.remove.onclick();equal(nodes.reportRows.children.length,3);input('gd','');equal(nodes.reportRows.children.length,0);equal(nodes.print.disabled,true);
-console.log(`${checks} logic checks passed, including all-object print-summary values. PDF appearance requires Safari preview.`);
+nodes.reset.onclick();
+const findAll=(root,predicate)=>[...(predicate(root)?[root]:[]),...(root.children||[]).flatMap(n=>findAll(n,predicate))];
+const texts=()=>findAll(nodes.scene,n=>!!n.textContent).map(n=>n.textContent);
+equal(texts().includes('79″ wide'),true);equal(texts().includes('195″ long'),true);equal(nodes.clearLeft.textContent,'80.5″');equal(nodes.clearRear.textContent,'34.5″');
+for(const [type,w,h] of [['sedan',73,190],['suv',79,195],['pickup',81,232],['van',81,237]]){nodes['preset-'+type].onclick();equal(nodes.vw.value,String(w));equal(nodes.vl.value,String(h));equal(nodes['preset-'+type]['aria-pressed'],'true');equal(findAll(nodes.scene,n=>n['data-vehicle-type']===type).length,1);equal(texts().includes(w+'″ wide'),true);equal(texts().includes(h+'″ long'),true)}
+nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes['preset-van']['aria-pressed'],'true');equal(nodes.vl.value,'237');
+input('vw',83.5);equal(nodes.vehicleNote.textContent.includes('custom measurements'),true);equal(texts().includes('83.5″ wide'),true);
+nodes.dimensions.onclick();equal(findAll(nodes.scene,n=>n.class==='dimension-layer').length,0);nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.dimensions['aria-pressed'],'false');
+// Older saved layouts without vehicle metadata remain readable.
+const legacy=JSON.parse(saved);delete legacy.vehicleType;delete legacy.showDimensions;saved=JSON.stringify(legacy);nodes.load.onclick();equal(nodes.dimensions['aria-pressed'],'true');equal(nodes.vw.value,'83.5');
+const bad=JSON.parse(saved);bad.vehicleType='constructor';saved=JSON.stringify(bad);nodes.load.onclick();equal(nodes.saveMessage.textContent.includes('kept'),true);
+nodes.reset.onclick();equal(nodes['preset-suv']['aria-pressed'],'true');equal(nodes.vw.value,'79');equal(nodes.vy.value,'34.5');
+console.log(`${checks} logic checks passed, including presets, vehicle appearance, dimensions and legacy saved layouts. Device rendering still needs browser review.`);
