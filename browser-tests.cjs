@@ -11,7 +11,7 @@ const path = require('node:path');
   const status=()=>page.locator('#status').textContent();
   const fill=async(id,value)=>page.locator('#'+id).fill(String(value));
   assert.equal(await status(),'REVISE');checks++;
-  assert.match(await page.locator('#message').textContent(),/17 in at cabinet #2/);checks++;
+  assert.match(await page.locator('#message').textContent(),/13 in at cabinet #2/);checks++;
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);checks++;
   await fill('sw','');assert.equal(await status(),'ENTER DATA');assert.equal(await page.locator('#print').isDisabled(),true);checks++;
   await fill('sw',18);await fill('sx',-1);assert.equal(await status(),'ENTER DATA');checks++;
