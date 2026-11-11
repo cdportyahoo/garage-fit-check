@@ -28,7 +28,7 @@ const path = require('node:path');
   // Real touch events through Chromium's input pipeline.
   await page.locator('#reset').click();await page.locator('#drawing').scrollIntoViewIfNeeded();box=await cabinet.boundingBox();const client=await page.context().newCDPSession(page);const touch=async(type,x,y)=>client.send('Input.dispatchTouchEvent',{type,touchPoints:type==='touchEnd'?[]:[{x,y}]});
   const viewportBefore=await page.evaluate(()=>({scrollY,top:document.getElementById('drawing').getBoundingClientRect().top}));
-  await touch('touchStart',box.x+box.width/2,box.y+15);assert.equal(await page.evaluate(()=>document.body.style.position),'fixed');checks++;
+  await touch('touchStart',box.x+box.width/2,box.y+15);assert.notEqual(await page.evaluate(()=>document.body.style.position),'fixed');checks++;
   await touch('touchMove',box.x+box.width/2-20,box.y+35);assert.ok(Math.abs(await page.evaluate(()=>document.getElementById('drawing').getBoundingClientRect().top)-viewportBefore.top)<1);checks++;
   await touch('touchEnd');assert.notEqual(await page.evaluate(()=>document.body.style.position),'fixed');assert.equal(await page.evaluate(()=>scrollY),viewportBefore.scrollY);checks++;assert.ok(Number(await page.locator('#sx').inputValue())<218);checks++;
   await page.evaluate(()=>{window.print=()=>{window.printCalled=true}});await page.locator('#print').click();assert.equal(await page.evaluate(()=>window.printCalled),true);checks++;
