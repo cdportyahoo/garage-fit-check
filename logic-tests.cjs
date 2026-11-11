@@ -62,7 +62,19 @@ const documentMove=touchEvent('touchmove',200,240);testEvents.touchmove(document
 const tm=touchEvent('touchmove',200,10000);surface.listeners.touchmove(tm);equal(nodes.vy.value,'69');equal(tm.prevented,true);equal(JSON.stringify(testBody.style),bodyBefore);
 testEvents.touchend(touchEvent('touchend',200,10000,99));const stillDragging=touchEvent('touchmove',200,9999);testEvents.touchmove(stillDragging);equal(stillDragging.prevented,true);
 testEvents.touchend(touchEvent('touchend',200,10000));const after=touchEvent('touchmove',200,10000);testEvents.touchmove(after);equal(after.prevented,undefined);equal(restoredScroll,null);equal(JSON.stringify(testBody.style),bodyBefore);equal(JSON.stringify(testRoot.style),rootBefore);
-nodes.reset.onclick();surface.listeners.touchstart(touchEvent('touchstart',364,233));surface.listeners.touchmove(touchEvent('touchmove',350,219));equal(Number(nodes.sw.value)<18,true);equal(Number(nodes.sh.value)<96,true);testEvents.touchcancel({type:'touchcancel',changedTouches:[],cancelable:true,preventDefault(){}});const canceled=touchEvent('touchmove',350,219);testEvents.touchmove(canceled);equal(canceled.prevented,undefined);
+nodes.reset.onclick();nodes.resizeMode.onclick();surface.listeners.touchstart(touchEvent('touchstart',364,233));surface.listeners.touchmove(touchEvent('touchmove',350,219));equal(Number(nodes.sw.value)<18,true);equal(Number(nodes.sh.value)<96,true);testEvents.touchcancel({type:'touchcancel',changedTouches:[],cancelable:true,preventDefault(){}});const canceled=touchEvent('touchmove',350,219);testEvents.touchmove(canceled);equal(canceled.prevented,undefined);
 nodes.reset.onclick();surface.listeners.touchstart(touchEvent('touchstart',200,200));testEvents.blur();const blurred=touchEvent('touchmove',200,240);testEvents.touchmove(blurred);equal(blurred.prevented,undefined);
 nodes.reset.onclick();surface.listeners.touchstart(touchEvent('touchstart',200,200));nodes.reset.onclick();equal(nodes.vy.value,'34.5');equal(restoredScroll,null);equal(JSON.stringify(testBody.style),bodyBefore);
-console.log(`${checks} logic checks passed. Native drag prevents scroll without changing body/root layout or calling scrollTo. Safari device confirmation remains required.`);
+nodes.reset.onclick();
+const choose=id=>nodes.cabinetChoices.children.find(b=>b['data-cabinet']===String(id)).onclick();
+choose(2);equal(nodes.selectedName.textContent,'#2');choose(1);equal(nodes.selectedName.textContent,'#1');equal(nodes.moveMode['aria-pressed'],'true');
+// Phone-like narrow cabinet: a touch outside its footprint still grabs it.
+const oldCtm=drawing.getScreenCTM;drawing.getScreenCTM=()=>({a:.75,b:0,inverse(){return {}}});
+surface.listeners.touchstart(touchEvent('touchstart',370,160));surface.listeners.touchmove(touchEvent('touchmove',338,160));surface.listeners.touchend(touchEvent('touchend',338,160));equal(Number(nodes.sx.value)<218,true);equal(nodes.sw.value,'18');equal(nodes.sh.value,'96');
+drawing.getScreenCTM=oldCtm;
+// The former resize corner moves the selected cabinet while Move is active.
+nodes.reset.onclick();surface.listeners.touchstart(touchEvent('touchstart',364,233));surface.listeners.touchmove(touchEvent('touchmove',340,220));surface.listeners.touchend(touchEvent('touchend',340,220));equal(Number(nodes.sx.value)<218,true);equal(nodes.sw.value,'18');equal(nodes.sh.value,'96');
+nodes.resizeMode.onclick();equal(nodes.resizeMode['aria-pressed'],'true');equal(findAll(nodes.scene,n=>n.class==='handle').length,1);choose(2);equal(nodes.moveMode['aria-pressed'],'true');equal(findAll(nodes.scene,n=>n.class==='handle').length,0);
+choose(1);nodes.resizeMode.onclick();const beforeW=Number(nodes.sw.value);surface.listeners.touchstart(touchEvent('touchstart',345,160));surface.listeners.touchmove(touchEvent('touchmove',330,150));surface.listeners.touchend(touchEvent('touchend',330,150));equal(Number(nodes.sw.value)<beforeW,true);
+nodes.reset.onclick();nodes.add.onclick();equal(nodes.cabinetChoices.children.length,3);equal(nodes.selectedName.textContent,'#3');nodes.remove.onclick();equal(nodes.cabinetChoices.children.length,2);
+console.log(`${checks} logic checks passed, including cabinet selection, enlarged targets, separate Move/Resize, native drag and saved layouts. iPhone confirmation remains required.`);

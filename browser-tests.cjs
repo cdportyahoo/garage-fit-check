@@ -24,7 +24,7 @@ const path = require('node:path');
   // Browser mouse pointer exercises the same SVG capture and coordinate conversion as touch.
   await page.locator('#drawing').scrollIntoViewIfNeeded();const cabinet=page.locator('#scene .unit').first();let box=await cabinet.boundingBox();
   await page.mouse.move(box.x+box.width/2,box.y+15);await page.mouse.down();await page.mouse.move(box.x+box.width/2-25,box.y+35,{steps:5});await page.mouse.up();assert.ok(Number(await page.locator('#sx').inputValue())<218);checks++;
-  const oldWidth=Number(await page.locator('#sw').inputValue());box=await page.locator('.handle').boundingBox();await page.mouse.move(box.x+9,box.y+9);await page.mouse.down();await page.mouse.move(box.x+19,box.y+19,{steps:5});await page.mouse.up();assert.ok(Number(await page.locator('#sw').inputValue())>oldWidth);checks++;
+  await page.locator('#resizeMode').click();await page.locator('#drawing').scrollIntoViewIfNeeded();const oldWidth=Number(await page.locator('#sw').inputValue());box=await page.locator('.handle').boundingBox();await page.mouse.move(box.x+9,box.y+9);await page.mouse.down();await page.mouse.move(box.x+19,box.y+19,{steps:5});await page.mouse.up();assert.ok(Number(await page.locator('#sw').inputValue())>oldWidth);checks++;
   // Real touch events through Chromium's input pipeline.
   await page.locator('#reset').click();await page.locator('#drawing').scrollIntoViewIfNeeded();box=await cabinet.boundingBox();const client=await page.context().newCDPSession(page);const touch=async(type,x,y)=>client.send('Input.dispatchTouchEvent',{type,touchPoints:type==='touchEnd'?[]:[{x,y}]});
   const viewportBefore=await page.evaluate(()=>({scrollY,top:document.getElementById('drawing').getBoundingClientRect().top}));
