@@ -31,8 +31,13 @@ fire('pointermove',-10000,-10000);equal(nodes.vx.value,'0');equal(nodes.vy.value
 fire('pointermove',10000,10000);equal(nodes.vx.value,'221');equal(nodes.vy.value,'69');
 fire('pointerup',10000,10000);fire('pointermove',100,100);equal(nodes.vx.value,'221');
 nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.vx.value,'221');equal(nodes.vy.value,'69');
-let prevented=0;const target=node();target.closest=()=>({});target.removeEventListener=(k,f)=>{if(target.listeners[k]===f)delete target.listeners[k]};
-drawing.listeners.touchstart({target,cancelable:true,preventDefault(){prevented++}});equal(prevented,1);
-target.listeners.touchmove({cancelable:true,preventDefault(){prevented++}});equal(prevented,2);
-target.listeners.touchend();equal(target.listeners.touchmove,undefined);equal(target.listeners.touchcancel,undefined);
-console.log(`${checks} logic checks passed. Browser/touch/print rendering require separate browser tests.`);
+nodes.reset.onclick();let prevented=0;const target=node();target.closest=selector=>selector.includes('vehicle')?{}:null;target.removeEventListener=(k,f)=>{if(target.listeners[k]===f)delete target.listeners[k]};
+const touch=(x,y,id=42)=>({changedTouches:[{identifier:id,clientX:x,clientY:y}],target,cancelable:true,preventDefault(){prevented++}});
+drawing.listeners.pointerdown({pointerType:'touch'});
+drawing.listeners.touchstart(touch(200,200));equal(prevented,1);
+// Native move continues on original target after render replaces SVG content.
+target.listeners.touchmove(touch(200,240));equal(Number(nodes.vy.value)>34.5,true);equal(prevented,2);
+target.listeners.touchmove(touch(200,10000));equal(nodes.vy.value,'69');
+target.listeners.touchend(touch(200,10000));equal(target.listeners.touchmove,undefined);equal(target.listeners.touchcancel,undefined);
+drawing.listeners.touchstart(touch(200,200));target.listeners.touchmove(touch(200,-10000));equal(nodes.vy.value,'0');target.listeners.touchcancel(touch(200,-10000));equal(target.listeners.touchmove,undefined);
+console.log(`${checks} logic checks passed. Safari touch scrolling still requires device verification.`);
