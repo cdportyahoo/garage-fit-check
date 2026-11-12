@@ -35,7 +35,7 @@ nodes.reset.onclick();const interaction=nodes.interaction;
 // The gesture target stays outside the redrawn scene throughout every move.
 fire('pointerdown',200,200);fire('pointermove',200,10000);equal(nodes.vy.value,'69');equal(nodes.interaction,interaction);fire('pointerup',200,10000);
 nodes.reset.onclick();equal(nodes.reportRows.children.length,3);
-equal(nodes.reportRows.children[0].children.map(c=>c.textContent).join('|'),'Car|80.5|34.5|79|195');
+equal(nodes.reportRows.children[0].children.map(c=>c.textContent).join('|'),'Car A — SUV|80.5|34.5|79|195');
 equal(nodes.reportRows.children[2].children.map(c=>c.textContent).join('|'),'Cabinet #2|8|232|60|18');
 nodes.add.onclick();equal(nodes.reportRows.children.length,4);input('sw',53.5);equal(nodes.reportRows.children[3].children[3].textContent,'53.5');
 nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.reportRows.children.length,4);equal(nodes.reportRows.children[3].children[3].textContent,'53.5');
@@ -49,7 +49,7 @@ nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes['pre
 input('vw',83.5);equal(nodes.vehicleNote.textContent.includes('custom measurements'),true);equal(texts().includes('83.5″ wide'),true);
 nodes.dimensions.onclick();equal(findAll(nodes.scene,n=>n.class==='dimension-layer').length,0);nodes.save.onclick();nodes.reset.onclick();nodes.load.onclick();equal(nodes.dimensions['aria-pressed'],'false');
 // Older saved layouts without vehicle metadata remain readable.
-const legacy=JSON.parse(saved);delete legacy.vehicleType;delete legacy.showDimensions;saved=JSON.stringify(legacy);nodes.load.onclick();equal(nodes.dimensions['aria-pressed'],'true');equal(nodes.vw.value,'83.5');
+const legacy=JSON.parse(saved);legacy.version=1;delete legacy.vehicles;delete legacy.vehicleCount;delete legacy.activeVehicle;delete legacy.vehicleType;delete legacy.showDimensions;saved=JSON.stringify(legacy);nodes.load.onclick();equal(nodes.dimensions['aria-pressed'],'true');equal(nodes.vw.value,'83.5');
 const bad=JSON.parse(saved);bad.vehicleType='constructor';saved=JSON.stringify(bad);nodes.load.onclick();equal(nodes.saveMessage.textContent.includes('kept'),true);
 nodes.reset.onclick();equal(nodes['preset-suv']['aria-pressed'],'true');equal(nodes.vw.value,'79');equal(nodes.vy.value,'34.5');
 nodes.reset.onclick();
@@ -77,4 +77,22 @@ nodes.reset.onclick();surface.listeners.touchstart(touchEvent('touchstart',364,2
 nodes.resizeMode.onclick();equal(nodes.resizeMode['aria-pressed'],'true');equal(findAll(nodes.scene,n=>n.class==='handle').length,1);choose(2);equal(nodes.moveMode['aria-pressed'],'true');equal(findAll(nodes.scene,n=>n.class==='handle').length,0);
 choose(1);nodes.resizeMode.onclick();const beforeW=Number(nodes.sw.value);surface.listeners.touchstart(touchEvent('touchstart',345,160));surface.listeners.touchmove(touchEvent('touchmove',330,150));surface.listeners.touchend(touchEvent('touchend',330,150));equal(Number(nodes.sw.value)<beforeW,true);
 nodes.reset.onclick();nodes.add.onclick();equal(nodes.cabinetChoices.children.length,3);equal(nodes.selectedName.textContent,'#3');nodes.remove.onclick();equal(nodes.cabinetChoices.children.length,2);
+// Multi-car regression: independent types, positions, collisions, saves and touch movement.
+nodes.reset.onclick();nodes.garage2.onclick();equal(nodes.gw.value,'288');equal(nodes.vehicleChoices.children.length,2);equal(findAll(nodes.scene,n=>n.class==='vehicle').length,2);
+const carChoice=i=>nodes.vehicleChoices.children.find(b=>b['data-car']===String(i)).onclick();
+carChoice(1);equal(nodes.vehicleHeading.textContent,'Car B');nodes['preset-pickup'].onclick();input('vy',12);input('vw',85);nodes.save.onclick();let multi=JSON.parse(saved);equal(multi.version,2);equal(multi.vehicles[1].type,'pickup');equal(multi.vehicles[1].w,85);equal(multi.vehicles[0].type,'suv');
+carChoice(0);equal(nodes.vw.value,'79');equal(nodes.vy.value,'34.5');nodes.reset.onclick();equal(nodes.vehicleChoices.children.length,2);nodes.load.onclick();equal(nodes.vehicleHeading.textContent,'Car B');equal(nodes.vw.value,'85');equal(nodes.vy.value,'12');equal(nodes.reportRows.children[1].children[0].textContent,'Car B — Pickup truck');
+// Vehicle-to-vehicle collisions and gaps must affect overall status.
+carChoice(0);input('vx',100);input('vy',20);carChoice(1);input('vx',100);input('vy',20);equal(status(),'STOP');
+input('vx',180);input('gap',10);equal(status(),'REVISE');equal(nodes.message.textContent.includes('Car A / Car B'),true);
+// Three cars survive reset/load and report every vehicle.
+nodes.garage3.onclick();equal(nodes.gw.value,'432');equal(nodes.vehicleChoices.children.length,3);carChoice(2);nodes['preset-van'].onclick();input('vy',10);nodes.save.onclick();multi=JSON.parse(saved);equal(multi.vehicles.length,3);equal(multi.vehicles[2].type,'van');equal(nodes.reportRows.children.length,5);nodes.reset.onclick();nodes.load.onclick();equal(nodes.vehicleHeading.textContent,'Car C');equal(nodes.vl.value,'237');equal(nodes.vy.value,'10');
+// A malformed extra vehicle is rejected without changing the layout.
+const corrupt=JSON.parse(saved);corrupt.vehicles[0].w=0;saved=JSON.stringify(corrupt);nodes.load.onclick();equal(nodes.saveMessage.textContent.includes('kept'),true);equal(nodes.vl.value,'237');
+// Touch a nonselected car and drag downward without changing the page styles.
+nodes.reset.onclick();carChoice(0);const beforeTouchStyle=JSON.stringify(testBody.style);const cWidth=432,cDepth=264,scale=Math.min(340/cWidth,350/cDepth),bx=(420-cWidth*scale)/2,by=48+(360-cDepth*scale)/2;const bX=bx+216*scale,bY=by+132*scale;surface.listeners.touchstart(touchEvent('touchstart',bX,bY));surface.listeners.touchmove(touchEvent('touchmove',bX,bY+15));surface.listeners.touchend(touchEvent('touchend',bX,bY+15));equal(nodes.vehicleHeading.textContent,'Car B');equal(Number(nodes.vy.value)>37,true);equal(JSON.stringify(testBody.style),beforeTouchStyle);equal(restoredScroll,null);
+nodes.save.onclick();multi=JSON.parse(saved);equal(multi.activeVehicle,1);equal(multi.vehicles[0].y,34.5);equal(multi.vehicles[1].y,Number(nodes.vy.value));
+// Changing count keeps the saved three-car layout available for restoration.
+nodes.garage1.onclick();equal(nodes.vehicleChoices.children.length,1);nodes.load.onclick();equal(nodes.vehicleChoices.children.length,3);equal(nodes.vehicleHeading.textContent,'Car B');
 console.log(`${checks} logic checks passed, including cabinet selection, enlarged targets, separate Move/Resize, native drag and saved layouts. iPhone confirmation remains required.`);
+
