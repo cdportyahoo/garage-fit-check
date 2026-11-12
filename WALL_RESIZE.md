@@ -1,9 +1,7 @@
-# Version 10.17 — drag garage walls
+# Version 10.18 — direct finger dragging of garage walls
 
-Tap Resize garage, then pull the purple horizontal handle at the right wall for width or vertical handle below the door end for depth. Tap Done resizing garage to hide the handles. Numeric fields remain available for exact measurements. Handles use 44 CSS-pixel diameter touch targets and the existing stable touch surface.
+Replaces the 10.17 mode-gated interaction. No Resize garage button or mode is needed. Drag along the right wall to change width or along the garage-door edge to change depth. Arrow handles remain visible as additional grab points. Numeric measurements remain available.
 
-Coordinates and scale are frozen for a wall gesture; the plan refits only after release/cancel. Objects retain their dimensions and coordinates, so shrinking around them produces the existing outside-garage warning. SVG overflow is clipped to prevent a growing room from widening the page. Handles and hints are excluded from print. Dimensions continue to save through the existing multi-vehicle schema and print report.
+Wall-edge touch targets extend 24 CSS pixels around the edge. Cars and enlarged cabinet targets retain priority nearby, except directly on the visible arrow handle. Existing stable touch capture and frozen gesture scale remain; the plan refits on release. Cars and cabinets keep coordinates and dimensions. Shrinking too far raises STOP. Save/load and print measurements use the updated garage size.
 
-228 Node logic checks passed, including all prior cabinet/car tests and new wall-width/depth touch tests for one, two and three cars, repeated-coordinate stability, unchanged vehicles, saved dimensions, report updates, shrink warnings, cancellation and page-style stability. Actual iPhone Safari touch confirmation remains required.
-
-Live browser check: version 10.17 and both handles appeared. Dragged width from 240 to 254 inches and depth from 264 to 278 inches; car coordinates and dimensions stayed unchanged, with no page horizontal overflow. Save → Reset → Load restored 254 × 278 and updated print-report dimensions. GitHub Pages deployment succeeded. Actual iPhone touch/scroll confirmation remains pending.
+230 Node logic checks passed, including default-on wall handles, direct edge touches away from handles, unchanged objects, one/two/three-car resizing, no coordinate drift, cabinet edge-target regressions, saved dimensions, cancellation and page-style stability. iPhone Safari confirmation from the user remains pending.
