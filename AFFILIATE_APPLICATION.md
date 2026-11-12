@@ -1,6 +1,6 @@
 # Affiliate application preparation
 
-Status: NOT SUBMITTED. No affiliate account or approval is claimed. Home Depot / Impact signup requires accepting the advertiser offer before exposing account creation or sign-in. Acceptance awaits the user's specific confirmation.
+Status: ON HOLD / NOT SUBMITTED. User requested comparison before choosing. See AFFILIATE_COMPARISON.md. No acceptance permission was given. Affiliate/referral arrangements only; no wholesale/dealer responsibilities. No affiliate account or approval is claimed. Home Depot / Impact signup requires accepting the advertiser offer before exposing account creation or sign-in. Acceptance awaits the user's specific confirmation.
 
 ## Prepared business profile
 
