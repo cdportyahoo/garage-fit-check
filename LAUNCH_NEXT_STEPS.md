@@ -9,13 +9,13 @@ Working baseline: 10.15. The user reported successful operation in both Safari a
 - Sitemap: https://cdportyahoo.github.io/garage-fit-check/sitemap.xml
 - Descriptive titles, canonical URLs and sharing metadata are already deployed.
 
-## Next account-dependent step
+## Google Search Console progress — 2026-11-12
 
-Open Google Search Console under the user's Google account and add a URL-prefix property for https://cdportyahoo.github.io/garage-fit-check/ (including final slash). Domain verification is not the chosen route for this GitHub Pages subpath.
-
-Choose HTML tag verification and copy the exact google-site-verification meta tag. Once the user supplies that public verification tag, add it to the page head, deploy and verify its presence. The user can then complete Google's Verify step. Do not invent a token or claim ownership verification is complete.
-
-After verification: submit sitemap.xml, inspect the planner and guide URLs, and request indexing if offered. Search Console reports Google search impressions and clicks; it is not a count of all visitors. None of these account actions has been completed yet, and no traffic or indexing is claimed.
+- Ownership verified successfully with the HTML tag under the user's Google account. Keep the verification meta tag in index.html. Verification deployment: 5de081777a9a5021ea9d7cf2dedc3fd59d2716d9; GitHub Pages deployment succeeded and the live tag was checked.
+- sitemap.xml submitted successfully. The subsequent report showed "Couldn't fetch" / "Sitemap could not be read", with zero discovered pages. A direct check returned HTTP 200 and application/xml with both expected URLs. Submission is complete; successful Google processing remains unconfirmed. Recheck this report later and investigate if the error persists.
+- Both the planner and measuring guide were initially unknown to Google. Requested indexing for each; Google confirmed "Indexing requested" and addition to a priority crawl queue for both.
+- Neither page is claimed indexed yet. The next milestone is confirming Google has crawled/indexed them and that the sitemap report succeeds.
+- Search Console reports Google search impressions and clicks, not all visitors. No traffic or revenue is claimed.
 
 ## Income plan
 
