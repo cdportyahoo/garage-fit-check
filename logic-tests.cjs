@@ -94,5 +94,17 @@ nodes.reset.onclick();carChoice(0);const beforeTouchStyle=JSON.stringify(testBod
 nodes.save.onclick();multi=JSON.parse(saved);equal(multi.activeVehicle,1);equal(multi.vehicles[0].y,34.5);equal(multi.vehicles[1].y,Number(nodes.vy.value));
 // Changing count keeps the saved three-car layout available for restoration.
 nodes.garage1.onclick();equal(nodes.vehicleChoices.children.length,1);nodes.load.onclick();equal(nodes.vehicleChoices.children.length,3);equal(nodes.vehicleHeading.textContent,'Car B');
+// Garage wall handles use a frozen scale until release, avoiding feedback jumps.
+for(const count of [1,2,3]){
+ nodes['garage'+count].onclick();nodes.reset.onclick();nodes.resizeGarage.onclick();equal(nodes.resizeGarage['aria-pressed'],'true');equal(findAll(nodes.scene,n=>n.class==='wall-handles').length,1);
+ const beforeVehicles=JSON.parse((nodes.save.onclick(),saved)).vehicles;const oldW=Number(nodes.gw.value),oldD=Number(nodes.gd.value),sc=Math.min(340/oldW,350/oldD),originX=(420-oldW*sc)/2,originY=48+(360-oldD*sc)/2;
+ const hx=originX+oldW*sc+12,hy=originY+oldD*sc/2;
+ surface.listeners.touchstart(touchEvent('touchstart',hx,hy));const event=touchEvent('touchmove',hx+20,hy);surface.listeners.touchmove(event);equal(event.prevented,true);equal(Number(nodes.gw.value),Math.round(oldW+20/sc));const once=nodes.gw.value;surface.listeners.touchmove(touchEvent('touchmove',hx+20,hy));equal(nodes.gw.value,once);equal(nodes.gd.value,String(oldD));surface.listeners.touchend(touchEvent('touchend',hx+20,hy));equal(JSON.stringify(testBody.style),bodyBefore);equal(restoredScroll,null);
+ const w=Number(nodes.gw.value),sc2=Math.min(340/w,350/oldD),ox=(420-w*sc2)/2,oy=48+(360-oldD*sc2)/2,dx=ox+w*sc2/2,dy=oy+oldD*sc2+14;
+ surface.listeners.touchstart(touchEvent('touchstart',dx,dy));surface.listeners.touchmove(touchEvent('touchmove',dx,dy+15));equal(nodes.gd.value,String(Math.round(oldD+15/sc2)));surface.listeners.touchend(touchEvent('touchend',dx,dy+15));
+ nodes.save.onclick();const layout=JSON.parse(saved);equal(JSON.stringify(layout.vehicles),JSON.stringify(beforeVehicles));const savedWidth=nodes.gw.value,savedDepth=nodes.gd.value;nodes.reset.onclick();nodes.load.onclick();equal(nodes.gw.value,savedWidth);equal(nodes.gd.value,savedDepth);equal(nodes.reportGarage.textContent.includes(savedWidth+' in wide × '+savedDepth+' in deep'),true);
+}
+// Shrinking a wall warns about objects outside, rather than moving them silently.
+nodes.garage1.onclick();nodes.reset.onclick();nodes.resizeGarage.onclick();const sc=Math.min(340/240,350/264),ox=(420-240*sc)/2,oy=48+(360-264*sc)/2;surface.listeners.touchstart(touchEvent('touchstart',ox+240*sc+12,oy+132*sc));surface.listeners.touchmove(touchEvent('touchmove',ox+100*sc+12,oy+132*sc));equal(nodes.gw.value,'100');equal(status(),'STOP');surface.listeners.touchcancel({type:'touchcancel',changedTouches:[],cancelable:true,preventDefault(){}});equal(JSON.stringify(testBody.style),bodyBefore);nodes.reset.onclick();equal(nodes.resizeGarage['aria-pressed'],'false');equal(findAll(nodes.scene,n=>n.class==='wall-handles').length,0);
 console.log(`${checks} logic checks passed, including cabinet selection, enlarged targets, separate Move/Resize, native drag and saved layouts. iPhone confirmation remains required.`);
 
