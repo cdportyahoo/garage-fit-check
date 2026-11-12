@@ -17,6 +17,10 @@ Working baseline: 10.15. The user reported successful operation in both Safari a
 - Neither page is claimed indexed yet. The next milestone is confirming Google has crawled/indexed them and that the sitemap report succeeds.
 - Search Console reports Google search impressions and clicks, not all visitors. No traffic or revenue is claimed.
 
+## Follow-up access checks — 2026-11-12
+
+Google Search Console's live URL test fetched sitemap.xml successfully using Google Inspection Tool smartphone: crawl allowed Yes, page fetch Successful, indexing allowed Yes. The sitemap report still showed Couldn't fetch; do not claim its processing succeeded. Independent XML parsing confirmed the sitemap namespace and both listed pages returned HTTP 200. The domain-root robots.txt returned 404, not a blocking robots rule. The planner remains unknown to Google's index at this check. Both page indexing requests were already accepted; avoid repeatedly submitting them. Next: allow Google processing time, then recheck sitemap status and page indexing before diagnosing a persistent issue.
+
 ## Income plan
 
 Keep the planner and measuring guide free while validating demand. Add useful, researched storage-product comparisons and affiliate referrals only after an appropriate program is actually approved; disclose affiliate relationships when applicable. No paid advertising, new subscriptions, checkout or invented earnings. The first measurable milestone is verified search visibility, not a revenue promise.
