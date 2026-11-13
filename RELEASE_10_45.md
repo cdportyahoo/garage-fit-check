@@ -1,6 +1,6 @@
-# Layout backup and restore — 10.45 preview
+# Layout backup and restore — 10.45
 
-Status: draft, not published. Live baseline remains 10.44.
+Status: user approved publishing 10.45 on 2026-11-13. Previous live baseline: 10.44.
 
 ## Accepted baseline
 On 2026-11-13, Chris confirmed all stairs look great and authorized moving to the next development step. Preserve the approved stair, door and rail geometry. Automated checks compare both side doors with the approved preview.
@@ -16,4 +16,4 @@ Download all saved layouts in a JSON backup and restore that file on the same or
 - Real iPhone download/Files picker behavior has not yet been tested by Chris.
 
 ## Release
-Review the preview with Chris before merging or publishing.
+Chris approved the preview and authorized publishing on 2026-11-13.
