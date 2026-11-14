@@ -20,3 +20,26 @@
 User confirmed sending EasyGarage, FLEXIMOUNTS and Lowe's inquiries through their own mail app, and receiving Home Depot Creator support-ticket acknowledgement. These are inquiries only, not applications, approvals or accepted contracts. Replies remain pending.
 
 Reference: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl
+
+
+## November 13, 2026 — Search Console verification (America/Chicago)
+
+### Confirmed indexed in Google's URL Inspection
+- Planner: https://cdportyahoo.github.io/garage-fit-check/
+- Measuring guide: https://cdportyahoo.github.io/garage-fit-check/garage-measuring-guide.html
+- Two-/three-car guide: https://cdportyahoo.github.io/garage-fit-check/two-three-car-garage-layout.html
+
+All three displayed "URL is on Google" and "Page is indexed". For the planner, the last crawl shown was Nov 11, 2026, 7:18:08 PM, Googlebot smartphone; fetch successful, crawling/indexing allowed, and Google-selected canonical matched the inspected URL. This confirms indexing, not ranking, traffic, or Google's adoption of every recent app revision.
+
+### Newly requested indexing
+The cabinet sizing guide and shallow-versus-deep cabinet comparison initially displayed "URL is unknown to Google". Requested indexing once for each. Google displayed "Indexing requested" and confirmed addition to a priority crawl queue for both. They are not claimed indexed yet. Do not repeat these requests merely because reports lag.
+
+### Sitemap and technical checks
+- Submitted sitemap report still displayed "Couldn't fetch", zero discovered pages, and last read Nov 12. This report has not been fixed or claimed successful.
+- Google live URL inspection of sitemap.xml on Nov 13 succeeded: URL available to Google, crawl allowed Yes, page fetch Successful, indexing allowed Yes (Google Inspection Tool smartphone). Live fetch success is distinct from sitemap report processing.
+- Direct HTTP checks returned 200 for sitemap.xml and all five listed pages. XML parsed successfully with five URLs.
+- Every HTML page has its matching canonical. No robots/googlebot noindex meta or X-Robots-Tag was found. The home-page ownership verification tag remains present. Domain-root robots.txt returned 404.
+- Overview performance and indexing summary reports still said "Processing data, please check again in a day or so". No impression/click numbers are established.
+
+### Next
+Allow processing time, then recheck the two requested guides, sitemap report and performance data. Use actual queries and impressions to prioritize future content. No app drawing or functionality changes were made in this check.
