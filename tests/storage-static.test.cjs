@@ -8,6 +8,8 @@ for(const id of ['add','storageMenu','addCabinet','addShelf','addRack','storageH
 }
 assert(script.includes("!['cabinet','steps','rack','shelf'].includes(u.kind)"),'Saved layout validator does not accept storage kinds');
 assert(script.includes('verticalWarning'),'Missing unsafe height status check');
+assert(script.includes('mount+thick>ceiling'),'Ceiling overflow must warn independently of vehicle height');
+assert(script.includes('u.mountHeight+thick>ceiling'),'Global ceiling overflow must be checked');
 assert(script.includes('storageThickness:6'),'Overhead rack default thickness missing');
 assert(script.includes('storageThickness:2'),'Wall shelf default thickness missing');
 assert(script.includes('Number.isFinite(ceiling)&&ceiling>0'),'Invalid ceiling height safeguard missing');
