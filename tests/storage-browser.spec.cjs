@@ -57,3 +57,20 @@ test('phone-sized layout supports storage controls and save', async ({ page }) =
   await expect(page.locator('#savedPlans option')).toContainText(['Phone storage layout']);
   expect(errors).toEqual([]);
 });
+
+test('storage selection and resize mode work on a phone viewport', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('http://127.0.0.1:8765/index.html');
+  await page.locator('#add').click();
+  await page.locator('#addRack').click();
+  await expect(page.locator('#cabinetChoices button').last()).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('#resizeMode').click();
+  await expect(page.locator('#resizeMode')).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('#moveMode').click();
+  await expect(page.locator('#moveMode')).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('#remove').click();
+  await expect(page.locator('#cabinetChoices')).not.toContainText('Rack');
+  expect(errors).toEqual([]);
+});
