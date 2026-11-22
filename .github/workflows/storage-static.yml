@@ -1,0 +1,16 @@
+name: Storage planner static checks
+on:
+  push:
+    branches: [feature/storage-planning-preview]
+  pull_request:
+    branches: [main]
+jobs:
+  static-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate planner JavaScript and storage integration
+        run: node tests/storage-static.test.cjs
