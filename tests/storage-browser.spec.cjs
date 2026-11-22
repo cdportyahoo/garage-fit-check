@@ -35,6 +35,7 @@ test('shelf and cabinet can be added without runtime errors', async ({ page }) =
   await expect(page.locator('#cabinetChoices')).toContainText('Shelf');
   await page.locator('#add').click();
   await page.locator('#addCabinet').click();
-  await expect(page.locator('#cabinetChoices')).toContainText('Cabinet');
+  await expect(page.locator('#cabinetChoices button')).toHaveCount(4);
+  await expect(page.locator('#cabinetChoices button').last()).toHaveAttribute('aria-label', /Select.*cabinet/i);
   expect(errors).toEqual([]);
 });
