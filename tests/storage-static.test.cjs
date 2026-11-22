@@ -21,6 +21,8 @@ assert(script.includes('mount+thick>ceiling'),'Ceiling overflow must warn indepe
 assert(script.includes('u.mountHeight+thick>ceiling'),'Global ceiling overflow must be checked');
 assert(script.includes('storageThickness:6'),'Overhead rack default thickness missing');
 assert(script.includes('storageThickness:2'),'Wall shelf default thickness missing');
+assert(script.includes('Math.min(10,g.w-size.w)'),'New storage must be positioned within garage width when possible');
+assert(script.includes('Math.min(10,g.h-size.h)'),'New storage must be positioned within garage depth when possible');
 assert(script.includes('Number.isFinite(ceiling)&&ceiling>0'),'Invalid ceiling height safeguard missing');
 assert(script.includes("u.kind!=='rack'||"),'Shelf-specific height handling missing');
 assert(script.includes('verticalUnknown'),'Missing incomplete height status check');
