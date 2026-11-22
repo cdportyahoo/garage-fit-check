@@ -18,8 +18,8 @@ test('storage controls, height warning, and saved layout survive reload', async 
   await page.locator('#save').click();
   await expect(page.locator('#savedPlans option')).toContainText(['Browser test layout']);
   await page.reload();
+  page.once('dialog', dialog => dialog.accept());
   await page.locator('#load').click();
-  await page.once('dialog', dialog => dialog.accept());
   await expect(page.locator('#ceilingHeight')).toHaveValue('120');
   await expect(page.locator('#vehicleHeight')).toHaveValue('72');
   await expect(page.locator('#cabinetChoices')).toContainText('Rack');
