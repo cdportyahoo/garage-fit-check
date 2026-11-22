@@ -8,6 +8,10 @@ for(const id of ['add','storageMenu','addCabinet','addShelf','addRack','storageH
 }
 assert(script.includes("!['cabinet','steps','rack','shelf'].includes(u.kind)"),'Saved layout validator does not accept storage kinds');
 assert(script.includes('verticalWarning'),'Missing unsafe height status check');
+assert(script.includes('storageThickness:6'),'Overhead rack default thickness missing');
+assert(script.includes('storageThickness:2'),'Wall shelf default thickness missing');
+assert(script.includes('Number.isFinite(ceiling)&&ceiling>0'),'Invalid ceiling height safeguard missing');
+assert(script.includes("u.kind!=='rack'||"),'Shelf-specific height handling missing');
 assert(script.includes('verticalUnknown'),'Missing incomplete height status check');
 assert(script.includes('elevatedOutside'),'Missing elevated storage bounds check');
 assert(script.includes('floorUnits'),'Missing separate floor collision set');
