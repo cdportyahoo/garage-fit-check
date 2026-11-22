@@ -13,6 +13,8 @@ assert(script.includes('storageThickness:2'),'Wall shelf default thickness missi
 assert(script.includes('Number.isFinite(ceiling)&&ceiling>0'),'Invalid ceiling height safeguard missing');
 assert(script.includes("u.kind!=='rack'||"),'Shelf-specific height handling missing');
 assert(script.includes('verticalUnknown'),'Missing incomplete height status check');
+assert(script.includes('const overlapsVehicle='),'Rack height check must detect actual vehicle overlap');
+assert(script.includes('!overlapsVehicle||'),'Vehicle height should only be mandatory when rack overlaps vehicle');
 assert(script.includes('elevatedOutside'),'Missing elevated storage bounds check');
 assert(script.includes('floorUnits'),'Missing separate floor collision set');
 assert(script.includes("data.verticalMeasurements?.ceilingHeight??''"),'Saved ceiling height not restored');
