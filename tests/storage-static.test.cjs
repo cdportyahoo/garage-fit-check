@@ -26,6 +26,7 @@ assert(script.includes('Math.min(10,g.h-size.h)'),'New storage must be positione
 assert(script.includes('Number.isFinite(ceiling)&&ceiling>0'),'Invalid ceiling height safeguard missing');
 assert(script.includes("u.kind!=='rack'||"),'Shelf-specific height handling missing');
 assert(script.includes('verticalUnknown'),'Missing incomplete height status check');
+assert(html.includes('id="storageHeightDetails" open hidden'),'Storage details must expand when selected');
 assert(script.includes('const overlapsVehicle='),'Rack height check must detect actual vehicle overlap');
 assert(script.includes('!overlapsVehicle||'),'Vehicle height should only be mandatory when rack overlaps vehicle');
 assert(script.includes('elevatedOutside'),'Missing elevated storage bounds check');
