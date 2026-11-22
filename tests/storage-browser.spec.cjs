@@ -39,3 +39,21 @@ test('shelf and cabinet can be added without runtime errors', async ({ page }) =
   await expect(page.locator('#cabinetChoices button').last()).toHaveAttribute('aria-label', /Select.*cabinet/i);
   expect(errors).toEqual([]);
 });
+
+test('phone-sized layout supports storage controls and save', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('http://127.0.0.1:8765/index.html');
+  await page.locator('#add').click();
+  await expect(page.locator('#addShelf')).toBeVisible();
+  await page.locator('#addShelf').click();
+  await expect(page.locator('#storageHeightDetails')).toBeVisible();
+  await page.locator('#mountHeight').fill('60');
+  await page.locator('#mountHeight').dispatchEvent('change');
+  await expect(page.locator('#mountHeight')).toHaveValue('60');
+  await page.locator('#layoutName').fill('Phone storage layout');
+  await page.locator('#save').click();
+  await expect(page.locator('#savedPlans option')).toContainText(['Phone storage layout']);
+  expect(errors).toEqual([]);
+});
