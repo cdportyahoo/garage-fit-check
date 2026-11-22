@@ -2,6 +2,15 @@ const fs=require('node:fs');const vm=require('node:vm');const assert=require('no
 const html=fs.readFileSync('index.html','utf8');
 const script=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(m=>m[1]).join('\n');
 assert(script.length>1000,'Planner JavaScript missing');
+
+// Catch missing DOM targets before mobile testing. The planner uses a $ helper for ID lookups.
+const ids=new Set([...html.matchAll(/\bid=["']([^"']+)["']/g)].map(m=>m[1]));
+const refs=[...script.matchAll(/\$\(['"]([A-Za-z][\w-]*)['"]\)/g)].map(m=>m[1]);
+const missing=[...new Set(refs)].filter(id=>!ids.has(id));
+assert.deepEqual(missing,[],'JavaScript references missing HTML element IDs');
+const duplicateIds=[...ids].filter(id=>(html.match(new RegExp('\\bid=["\\x27]'+id+'["\\x27]','g'))||[]).length>1);
+assert.deepEqual(duplicateIds,[],'Duplicate HTML element IDs');
+
 new vm.Script(script,{filename:'garage-fit-check.js'});
 for(const id of ['add','storageMenu','addCabinet','addShelf','addRack','storageHeightDetails','ceilingHeight','vehicleHeight','mountHeight','storageThickness','heightCheck','drawing','save','load','print']){
  assert(html.includes('id="'+id+'"'),'Missing control: '+id);
