@@ -31,6 +31,8 @@ assert(script.includes('const overlapsVehicle='),'Rack height check must detect 
 assert(script.includes('!overlapsVehicle||'),'Vehicle height should only be mandatory when rack overlaps vehicle');
 assert(script.includes('elevatedOutside'),'Missing elevated storage bounds check');
 assert(script.includes('floorUnits'),'Missing separate floor collision set');
+assert(script.includes("kind==='cabinet'?[...cars,...floorObjects]:[]"),'Cabinet placement should avoid floor obstacles');
+assert(script.includes('obstacles.every(item=>!collide(candidate,item))'),'Cabinet placement must test for overlap');
 assert(script.includes("data.verticalMeasurements?.ceilingHeight??''"),'Saved ceiling height not restored');
 assert(script.includes("data.verticalMeasurements?.vehicleHeight??''"),'Saved vehicle height not restored');
 console.log('PASS: JS syntax, storage controls, saved-layout hooks, and clearance safeguards');
