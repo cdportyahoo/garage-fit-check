@@ -60,7 +60,7 @@ html,body,.workspace{overflow-anchor:none}.planner-panel{overflow-anchor:none}.c
 
 .drawing-gesture-hint{font-size:11px;color:#74617f;line-height:1.5;margin:7px 0}.drawing-viewport{width:100%;aspect-ratio:420/470;overflow:hidden;border-radius:8px;background:#eee9ef;touch-action:none;overscroll-behavior:contain}.drawing-viewport>#drawing{width:var(--drawing-zoom,100%);height:auto;max-width:none;margin:0}.drawing-viewport:focus-visible{outline:3px solid #b88cde;outline-offset:3px}
 @media print{.drawing-gesture-hint{display:none}.drawing-viewport{aspect-ratio:auto;height:auto;overflow:visible}.drawing-viewport>#drawing{width:100%!important;max-height:125mm}}
-.drawing-gap-key{font-size:12px;line-height:1.55;color:#63546f;margin:9px 0 14px;padding:10px 12px;border:1px solid #e9dfb0;border-radius:9px;background:#fffbed}.drawing-gap-key>span{display:inline-block;width:12px;height:12px;margin-right:6px;background:#f4db70;border:1px solid #cbb656;border-radius:2px;vertical-align:-1px}.drawing-gap-key strong{font-weight:650}@media print{.drawing-gap-key{display:none}}.drawing-display-controls{margin:8px 0}.drawing-display-controls button{flex:0 0 auto;min-height:44px}</style></head><body><main><header><div class="brand"><span class="brandmark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 20V8l9-5 9 5v12M7 20V10h10v10M7 14h10M7 17h10"/></svg></span>THE GARAGE FIT CHECK</div><h1>Vehicle Planner</h1><p class="hero-copy">See your space clearly. Plan storage around the way you actually park.</p><div class="hero-meta"><span>Free layout planner</span><span>No account needed</span><span>Printable measurements</span></div><span class="version">Version 10.58</span></header><div class="workspace"><section class="panel planner-panel"><p class="section-kicker">01 / Your layout</p><h2>Your garage plan</h2><p class="section-copy">Drag to arrange. Dimensions and clearances update as you go.</p><div class="controls drawing-display-controls"><button id="dimensions" aria-pressed="true">Dimensions: on</button><button id="reset">Reset</button></div><p class="drawing-gesture-hint">Pinch with two fingers to zoom. Move two fingers together to look around.</p><div id="drawingViewport" class="drawing-viewport" tabindex="0" aria-label="Garage drawing. Pinch with two fingers to zoom and pan. Keyboard: plus or minus to zoom, arrows to pan, zero to reset."><svg id="drawing" viewBox="0 0 420 470" role="img" aria-label="Overhead garage layout. Drag the right wall or garage-door edge to resize. Drag any car or selected cabinet. Use object buttons to select and Move or Resize to choose the action."><defs><linearGradient id="wallFinish" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#bbb8bb"/><stop offset=".45" stop-color="#e0dde1"/><stop offset="1" stop-color="#a39ca8"/></linearGradient>
+.drawing-gap-key{font-size:12px;line-height:1.55;color:#63546f;margin:9px 0 14px;padding:10px 12px;border:1px solid #e9dfb0;border-radius:9px;background:#fffbed}.drawing-gap-key>span{display:inline-block;width:12px;height:12px;margin-right:6px;background:#f4db70;border:1px solid #cbb656;border-radius:2px;vertical-align:-1px}.drawing-gap-key strong{font-weight:650}@media print{.drawing-gap-key{display:none}}.drawing-display-controls{margin:8px 0}.drawing-display-controls button{flex:0 0 auto;min-height:44px}</style></head><body><main><header><div class="brand"><span class="brandmark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 20V8l9-5 9 5v12M7 20V10h10v10M7 14h10M7 17h10"/></svg></span>THE GARAGE FIT CHECK</div><h1>Vehicle Planner</h1><p class="hero-copy">See your space clearly. Plan storage around the way you actually park.</p><div class="hero-meta"><span>Free layout planner</span><span>No account needed</span><span>Printable measurements</span></div><span class="version">Version 10.59</span></header><div class="workspace"><section class="panel planner-panel"><p class="section-kicker">01 / Your layout</p><h2>Your garage plan</h2><p class="section-copy">Drag to arrange. Dimensions and clearances update as you go.</p><div class="controls drawing-display-controls"><button id="dimensions" aria-pressed="true">Dimensions: on</button><button id="reset">Reset</button></div><p class="drawing-gesture-hint">Pinch with two fingers to zoom. Move two fingers together to look around.</p><div id="drawingViewport" class="drawing-viewport" tabindex="0" aria-label="Garage drawing. Pinch with two fingers to zoom and pan. Keyboard: plus or minus to zoom, arrows to pan, zero to reset."><svg id="drawing" viewBox="0 0 420 470" role="img" aria-label="Overhead garage layout. Drag the right wall or garage-door edge to resize. Drag any car or selected cabinet. Use object buttons to select and Move or Resize to choose the action."><defs><linearGradient id="wallFinish" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#bbb8bb"/><stop offset=".45" stop-color="#e0dde1"/><stop offset="1" stop-color="#a39ca8"/></linearGradient>
 <linearGradient id="cabinetPurple" x1="0" x2="1"><stop stop-color="#50365f"/><stop offset=".16" stop-color="#8256a2"/><stop offset=".5" stop-color="#a47bc1"/><stop offset=".83" stop-color="#75458f"/><stop offset="1" stop-color="#4b2d5d"/></linearGradient>
 <linearGradient id="cabinetSteel" x1="0" x2="1"><stop stop-color="#3f3c4c"/><stop offset=".2" stop-color="#70677c"/><stop offset=".6" stop-color="#8e829a"/><stop offset="1" stop-color="#4f465c"/></linearGradient>
 <linearGradient id="glassFinish" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e2f4f8"/><stop offset=".28" stop-color="#a5c5d3"/><stop offset=".62" stop-color="#657f96"/><stop offset="1" stop-color="#b3d0db"/></linearGradient>
@@ -221,14 +221,17 @@ if(u.kind==='steps'){drawSteps(u,b,group,conflict)}else if(u.kind==='rack'||u.ki
   const vertical=h>w;
   const length=vertical?h:w,depth=vertical?w:h;
   const turn=vertical?(u.x+u.w/2<g.w/2?`translate(0 ${h}) rotate(-90)`:`translate(${w} 0) rotate(90)`):(u.y+u.h/2>g.h/2?`translate(${w} ${h}) rotate(180)`:'');
-  const lift=shelfElevation(u)*b.s;
+  const elevation=shelfElevation(u);
+  const [raisedX,raisedY]=entryProject(g,b,u.x,u.y,elevation);
+  const [raisedRight]=entryProject(g,b,u.x+u.w,u.y,elevation);
+  const lift=y-raisedY;
   if(lift>0){
     el('rect',{x,y,width:w,height:h,fill:'none',stroke:'#545362','stroke-opacity':.6,'stroke-width':.8,'stroke-dasharray':'3 2','pointer-events':'none'},group);
-    if(u.id===selected)for(const side of [x,x+w]){
-      el('line',{x1:side,x2:side,y1:y+h-lift,y2:y+h,stroke:'#6c6276','stroke-opacity':.55,'stroke-width':.65,'stroke-dasharray':'2 2','pointer-events':'none'},group);
+    if(u.id===selected)for(const [upper,lower] of [[raisedX,x],[raisedRight,x+w]]){
+      el('line',{x1:upper,x2:lower,y1:y+h-lift,y2:y+h,stroke:'#6c6276','stroke-opacity':.55,'stroke-width':.65,'stroke-dasharray':'2 2','pointer-events':'none'},group);
     }
   }
-  const shelf=el('g',{transform:`translate(${x} ${y-lift}) ${turn}`},group);
+  const shelf=el('g',{transform:`translate(${raisedX} ${raisedY}) scale(${(raisedRight-raisedX)/w} 1) ${turn}`},group);
   const defs=el('defs',{},shelf);
   const finish=(part,stops)=>{
     const id='shelf-'+part+'-'+u.id;
@@ -358,15 +361,19 @@ const hit=handles[0]&&(!onObject||handles[0].d<=14)?handles[0]:(!onObject&&edges
 function shelfElevation(u){
   const mount=Number.isFinite(u.mountHeight)?Math.max(0,u.mountHeight):0;
   const ceiling=Number($('ceilingHeight').value)||108;
-  return Math.min(mount,ceiling,108)*.65;
+  return Math.min(mount,ceiling,108);
 }
 function beginDrag(e){
 if(drag||$('print').disabled)return false;
 const at=screenToWorld(e);
+const g=model().g,b=bounds();
 const shelf=units.find(u=>{
-  if(u.kind!=='shelf'||at.x<u.x||at.x>u.x+u.w)return false;
-  const top=u.y-shelfElevation(u);
-  return at.y>=top&&at.y<=top+u.h;
+  if(u.kind!=='shelf')return false;
+  const elevation=shelfElevation(u);
+  const [left,top]=entryProject(g,b,u.x,u.y,elevation);
+  const [right]=entryProject(g,b,u.x+u.w,u.y,elevation);
+  const x=b.x+at.x*b.s,y=b.y+at.y*b.s;
+  return x>=left&&x<=right&&y>=top&&y<=top+u.h*b.s;
 });
 const entry=shelf?null:doorHit(at);
 if(!shelf&&!entry&&startWallDrag(e,at))return true;const cars=model().cars;
