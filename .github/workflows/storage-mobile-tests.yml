@@ -1,0 +1,24 @@
+name: Storage planner mobile interaction tests
+on:
+  push:
+    branches: [feature/storage-planning-preview]
+  workflow_dispatch:
+jobs:
+  mobile-interactions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test tools
+        run: |
+          npm install --no-save @playwright/test
+          npx playwright install --with-deps chromium
+      - name: Start preview server
+        run: |
+          python3 -m http.server 8000 > /tmp/garage-preview.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/ >/dev/null && break; sleep 1; done
+      - name: Run mobile drag and resize tests
+        run: npx playwright test tests/storage-interactions.spec.cjs --reporter=line
