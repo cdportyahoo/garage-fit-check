@@ -60,7 +60,7 @@ html,body,.workspace{overflow-anchor:none}.planner-panel{overflow-anchor:none}.c
 
 .drawing-gesture-hint{font-size:11px;color:#74617f;line-height:1.5;margin:7px 0}.drawing-viewport{width:100%;aspect-ratio:420/470;overflow:hidden;border-radius:8px;background:#eee9ef;touch-action:none;overscroll-behavior:contain}.drawing-viewport>#drawing{width:var(--drawing-zoom,100%);height:auto;max-width:none;margin:0}.drawing-viewport:focus-visible{outline:3px solid #b88cde;outline-offset:3px}
 @media print{.drawing-gesture-hint{display:none}.drawing-viewport{aspect-ratio:auto;height:auto;overflow:visible}.drawing-viewport>#drawing{width:100%!important;max-height:125mm}}
-.drawing-gap-key{font-size:12px;line-height:1.55;color:#63546f;margin:9px 0 14px;padding:10px 12px;border:1px solid #e9dfb0;border-radius:9px;background:#fffbed}.drawing-gap-key>span{display:inline-block;width:12px;height:12px;margin-right:6px;background:#f4db70;border:1px solid #cbb656;border-radius:2px;vertical-align:-1px}.drawing-gap-key strong{font-weight:650}@media print{.drawing-gap-key{display:none}}.drawing-display-controls{margin:8px 0}.drawing-display-controls button{flex:0 0 auto;min-height:44px}</style></head><body><main><header><div class="brand"><span class="brandmark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 20V8l9-5 9 5v12M7 20V10h10v10M7 14h10M7 17h10"/></svg></span>THE GARAGE FIT CHECK</div><h1>Vehicle Planner</h1><p class="hero-copy">See your space clearly. Plan storage around the way you actually park.</p><div class="hero-meta"><span>Free layout planner</span><span>No account needed</span><span>Printable measurements</span></div><span class="version">Version 10.52</span></header><div class="workspace"><section class="panel planner-panel"><p class="section-kicker">01 / Your layout</p><h2>Your garage plan</h2><p class="section-copy">Drag to arrange. Dimensions and clearances update as you go.</p><div class="controls drawing-display-controls"><button id="dimensions" aria-pressed="true">Dimensions: on</button><button id="reset">Reset</button></div><p class="drawing-gesture-hint">Pinch with two fingers to zoom. Move two fingers together to look around.</p><div id="drawingViewport" class="drawing-viewport" tabindex="0" aria-label="Garage drawing. Pinch with two fingers to zoom and pan. Keyboard: plus or minus to zoom, arrows to pan, zero to reset."><svg id="drawing" viewBox="0 0 420 470" role="img" aria-label="Overhead garage layout. Drag the right wall or garage-door edge to resize. Drag any car or selected cabinet. Use object buttons to select and Move or Resize to choose the action."><defs><linearGradient id="wallFinish" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#bbb8bb"/><stop offset=".45" stop-color="#e0dde1"/><stop offset="1" stop-color="#a39ca8"/></linearGradient>
+.drawing-gap-key{font-size:12px;line-height:1.55;color:#63546f;margin:9px 0 14px;padding:10px 12px;border:1px solid #e9dfb0;border-radius:9px;background:#fffbed}.drawing-gap-key>span{display:inline-block;width:12px;height:12px;margin-right:6px;background:#f4db70;border:1px solid #cbb656;border-radius:2px;vertical-align:-1px}.drawing-gap-key strong{font-weight:650}@media print{.drawing-gap-key{display:none}}.drawing-display-controls{margin:8px 0}.drawing-display-controls button{flex:0 0 auto;min-height:44px}</style></head><body><main><header><div class="brand"><span class="brandmark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 20V8l9-5 9 5v12M7 20V10h10v10M7 14h10M7 17h10"/></svg></span>THE GARAGE FIT CHECK</div><h1>Vehicle Planner</h1><p class="hero-copy">See your space clearly. Plan storage around the way you actually park.</p><div class="hero-meta"><span>Free layout planner</span><span>No account needed</span><span>Printable measurements</span></div><span class="version">Version 10.53</span></header><div class="workspace"><section class="panel planner-panel"><p class="section-kicker">01 / Your layout</p><h2>Your garage plan</h2><p class="section-copy">Drag to arrange. Dimensions and clearances update as you go.</p><div class="controls drawing-display-controls"><button id="dimensions" aria-pressed="true">Dimensions: on</button><button id="reset">Reset</button></div><p class="drawing-gesture-hint">Pinch with two fingers to zoom. Move two fingers together to look around.</p><div id="drawingViewport" class="drawing-viewport" tabindex="0" aria-label="Garage drawing. Pinch with two fingers to zoom and pan. Keyboard: plus or minus to zoom, arrows to pan, zero to reset."><svg id="drawing" viewBox="0 0 420 470" role="img" aria-label="Overhead garage layout. Drag the right wall or garage-door edge to resize. Drag any car or selected cabinet. Use object buttons to select and Move or Resize to choose the action."><defs><linearGradient id="wallFinish" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#bbb8bb"/><stop offset=".45" stop-color="#e0dde1"/><stop offset="1" stop-color="#a39ca8"/></linearGradient>
 <linearGradient id="cabinetPurple" x1="0" x2="1"><stop stop-color="#50365f"/><stop offset=".16" stop-color="#8256a2"/><stop offset=".5" stop-color="#a47bc1"/><stop offset=".83" stop-color="#75458f"/><stop offset="1" stop-color="#4b2d5d"/></linearGradient>
 <linearGradient id="cabinetSteel" x1="0" x2="1"><stop stop-color="#3f3c4c"/><stop offset=".2" stop-color="#70677c"/><stop offset=".6" stop-color="#8e829a"/><stop offset="1" stop-color="#4f465c"/></linearGradient>
 <linearGradient id="glassFinish" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e2f4f8"/><stop offset=".28" stop-color="#a5c5d3"/><stop offset=".62" stop-color="#657f96"/><stop offset="1" stop-color="#b3d0db"/></linearGradient>
@@ -180,23 +180,42 @@ if(u.kind==='steps'){drawSteps(u,b,group,conflict)}else if(u.kind==='rack'||u.ki
   const edge=Math.min(2.6,w/8,h/8);
   const x1=x+edge,x2=x+w-edge,y1=y+edge,y2=y+h-edge;
   const line=(x1,y1,x2,y2,stroke,width,opacity=1)=>el('line',{x1,y1,x2,y2,stroke,'stroke-width':width,'stroke-opacity':opacity,'pointer-events':'none'},group);
-  el('rect',{x,y,width:w,height:h,rx:1,fill:conflict?'#d94a68':'#a3a9b1','fill-opacity':conflict?.18:.04,stroke:steel,'stroke-width':2.8},group);
+  const defs=el('defs',{},group);
+  const finish=(name,direction,stops)=>{
+    const id='rack-'+name+'-'+u.id;
+    const gradient=el('linearGradient',{id,...direction},defs);
+    for(const [offset,color] of stops)el('stop',{offset,'stop-color':color},gradient);
+    return 'url(#'+id+')';
+  };
+  const rim=finish('rim',{x2:'100%',y2:'100%'},[
+    ['0%','#33363b'],['18%','#777d82'],['42%','#45494f'],['72%','#27292d'],['100%','#141619']
+  ]);
+  const rail=finish('rail',{x2:'100%',y2:'0%'},[
+    ['0%','#25282c'],['34%','#949ba0'],['57%','#5b6065'],['100%','#292c31']
+  ]);
+  const lip=Math.min(2,w/12,h/12);
+  el('rect',{x,y,width:w,height:h,rx:1.2,fill:conflict?'#d94a68':'#858a90','fill-opacity':conflict?.18:.035,stroke:conflict?steel:rim,'stroke-width':2.65},group);
+  line(x1,y+h-lip,x2,y+h-lip,'#141619',lip,.66);
+  line(x+w-lip,y1,x+w-lip,y2,'#141619',lip,.66);
+  line(x1,y+lip,x2,y+lip,'#a9aeb2',.65,.75);
+  line(x+lip,y1,x+lip,y2,'#92989e',.6,.68);
   const slats=Math.min(24,Math.max(4,Math.round(h/3.3)));
   for(let row=1;row<slats;row++){
     const wireY=y1+(y2-y1)*row/slats;
     line(x1,wireY,x2,wireY,'#222630',1,.65);
-    line(x1,wireY-.45,x2,wireY-.45,'#d3d8de',.55,.78);
+    line(x1,wireY-.38,x2,wireY-.38,'#c0c7cd',.48,.68);
   }
   for(const fraction of [.25,.5,.75]){
     const railX=x1+(x2-x1)*fraction;
-    line(railX,y1,railX,y2,steel,1.9);
-    line(railX-.45,y1,railX-.45,y2,highlight,.65,.86);
+    const railWidth=Math.min(2,w/15);
+    el('rect',{x:railX-railWidth/2,y:y1,width:railWidth,height:y2-y1,rx:.25,fill:conflict?steel:rail,'pointer-events':'none'},group);
   }
-  for(const railY of [y1,y2])line(x1,railY,x2,railY,highlight,.75,.9);
+  line(x1,y1,x2,y1,highlight,.52,.78);
   for(const postX of [x1+edge,x2-edge])for(const postY of [y1+edge,y2-edge]){
     const size=Math.min(5,w/6,h/6);
-    el('rect',{x:postX-size/2,y:postY-size/2,width:size,height:size,rx:.45,fill:steel,stroke:highlight,'stroke-width':.7,'pointer-events':'none'},group);
-    el('circle',{cx:postX,cy:postY,r:size*.17,fill:highlight,'pointer-events':'none'},group);
+    el('rect',{x:postX-size/2,y:postY-size/2,width:size,height:size,rx:.45,fill:conflict?steel:rim,stroke:conflict?highlight:'#838a90','stroke-width':.48,'pointer-events':'none'},group);
+    el('circle',{cx:postX,cy:postY,r:size*.21,fill:'#b8bec4',stroke:'#35383c','stroke-width':.42,'pointer-events':'none'},group);
+    line(postX-size*.09,postY,postX+size*.09,postY,'#474b50',.45);
   }
 }else{
   el('rect',{x,y,width:w,height:h,rx:3,fill:conflict?'#d94a68':'#62a9a0','fill-opacity':.28,stroke:conflict?'#b52345':'#267e77','stroke-width':2},group);
