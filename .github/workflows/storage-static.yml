@@ -1,0 +1,32 @@
+name: Storage planner static checks
+on:
+  push:
+    branches: [feature/storage-planning-preview]
+  pull_request:
+    branches: [main]
+jobs:
+  static-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate planner JavaScript and storage integration
+        run: node tests/storage-static.test.cjs
+
+  browser-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm install --no-save @playwright/test
+          npx playwright install --with-deps chromium
+      - name: Start local preview and test browser interactions
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/garage-preview.log 2>&1 &
+          npx playwright test tests/storage-browser.spec.cjs --browser chromium --workers 1 --reporter list
