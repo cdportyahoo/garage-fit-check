@@ -19,7 +19,6 @@ for (const kind of ['Cabinet','Shelf','Rack']) {
       const p=svg.createSVGPoint();p.x=b.x+(u.x+u.w/2)*b.s;p.y=b.y+(u.y+u.h/2)*b.s;
       const q=p.matrixTransform(svg.getScreenCTM());return {x:q.x,y:q.y};
     });
-    await page.touchscreen.tap(point.x,point.y);
     await page.evaluate(({x,y}) => {
       const surface=document.querySelector('#interaction');
       const touch=(identifier,clientX,clientY)=>({identifier,clientX,clientY});
